@@ -1,0 +1,166 @@
+--------------------------------------------------------------------------------
+I1 cache:         65536 B, 64 B, 8-way associative
+D1 cache:         32768 B, 64 B, 8-way associative
+LL cache:         35651584 B, 64 B, 17-way associative
+Command:          ./matrixmul-1-512-8
+Data file:        cachegrind.out.1251348
+Events recorded:  Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Events shown:     Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Event sort order: Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Thresholds:       0.1 100 100 100 100 100 100 100 100
+Include dirs:     
+User annotated:   
+Auto-annotation:  on
+
+--------------------------------------------------------------------------------
+Ir                     I1mr           ILmr           Dr                   D1mr               DLmr           Dw                  D1mw               DLmw            
+--------------------------------------------------------------------------------
+1,381,927,831 (100.0%) 1,505 (100.0%) 1,493 (100.0%) 289,973,351 (100.0%) 2,131,657 (100.0%) 1,370 (100.0%) 36,715,227 (100.0%) 2,131,087 (100.0%) 49,748 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                     I1mr        ILmr        Dr                   D1mr               DLmr         Dw                  D1mw               DLmw             file:function
+--------------------------------------------------------------------------------
+1,293,976,148 (93.64%)  4 ( 0.27%)  4 ( 0.27%) 268,439,623 (92.57%) 2,129,921 (99.92%)   0          33,554,504 (91.39%) 2,097,152 (98.41%) 16,384 (32.93%)  /vol/home/s3801322/Documents/CA/lab3materials-2024/lab3materials/matrixmul.c:matrix_multiply
+   67,109,120 ( 4.86%)  0           0           16,777,280 ( 5.79%)         0            0                   0                  0               0           /vol/home/s3801322/Documents/CA/lab3materials-2024/lab3materials/matrixmul.c:min.constprop.0
+    8,354,784 ( 0.60%)  2 ( 0.13%)  2 ( 0.13%)   2,097,152 ( 0.72%)         4 ( 0.00%)   2 ( 0.15%)    786,432 ( 2.14%)         0               0           ./stdlib/./stdlib/random_r.c:random_r
+    5,505,024 ( 0.40%)  3 ( 0.20%)  3 ( 0.20%)   2,097,152 ( 0.72%)         2 ( 0.00%)   1 ( 0.07%)    524,288 ( 1.43%)         0               0           ./stdlib/./stdlib/random.c:random
+    3,934,730 ( 0.28%)  1 ( 0.07%)  1 ( 0.07%)           4 ( 0.00%)         0            0             524,291 ( 1.43%)    16,384 ( 0.77%) 16,384 (32.93%)  /vol/home/s3801322/Documents/CA/lab3materials-2024/lab3materials/matrixmul.c:matrix_init_random
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /vol/home/s3801322/Documents/CA/lab3materials-2024/lab3materials/matrixmul.c
+--------------------------------------------------------------------------------
+Ir                   I1mr       ILmr       Dr                   D1mr               DLmr       Dw                  D1mw               DLmw            
+
+-- line 28 ----------------------------------------
+          .          .          .                    .                  .          .                   .                  .               .            * Use this constant when you implement loop blocking.
+          .          .          .                    .                  .          .                   .                  .               .            */
+          .          .          .                    .                  .          .                   .                  .               .           #if (BLOCK + 0)==0
+          .          .          .                    .                  .          .                   .                  .               .           #  undef BLOCK
+          .          .          .                    .                  .          .                   .                  .               .           #  define BLOCK 0
+          .          .          .                    .                  .          .                   .                  .               .           #endif
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .           static inline int min(int a, int b) {
+ 50,331,840 ( 3.64%) 0          0                    0                  0          0                   0                  0               0             return (a < b) ? a : b;
+ 16,777,280 ( 1.21%) 0          0           16,777,280 ( 5.79%)         0          0                   0                  0               0           }
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .           static void
+          .          .          .                    .                  .          .                   .                  .               .           matrix_clear(float matrix[N][N])
+          .          .          .                    .                  .          .                   .                  .               .           {
+          .          .          .                    .                  .          .                   .                  .               .             for (size_t i = 0; i < N; ++i)
+          .          .          .                    .                  .          .                   .                  .               .               for (size_t j = 0; j < N; ++j)
+          3 ( 0.00%) 0          0                    0                  0          0                   0                  0               0                 matrix[i][j] = 0;
+          .          .          .                    .                  .          .                   .                  .               .           }
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .           static void
+          .          .          .                    .                  .          .                   .                  .               .           matrix_init_identity(float matrix[N][N])
+          2 ( 0.00%) 1 ( 0.07%) 1 ( 0.07%)           0                  0          0                   1 ( 0.00%)         0               0           {
+          1 ( 0.00%) 0          0                    0                  0          0                   1 ( 0.00%)         0               0             matrix_clear(matrix);
+          .          .          .                    .                  .          .                   .                  .               .           
+      1,540 ( 0.00%) 0          0                    1 ( 0.00%)         1 ( 0.00%) 1 ( 0.07%)          0                  0               0             for (size_t i = 0; i < N; ++i)
+        512 ( 0.00%) 0          0                    0                  0          0                 512 ( 0.00%)       504 ( 0.02%)      0               matrix[i][i] = 1.;
+          2 ( 0.00%) 0          0                    2 ( 0.00%)         1 ( 0.00%) 0                   0                  0               0           }
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .           static void
+          .          .          .                    .                  .          .                   .                  .               .           matrix_init_random(float matrix[N][N])
+          6 ( 0.00%) 1 ( 0.07%) 1 ( 0.07%)           0                  0          0                   3 ( 0.00%)         0               0           {
+      1,536 ( 0.00%) 0          0                    0                  0          0                   0                  0               0             for (size_t i = 0; i < N; ++i)
+    787,456 ( 0.06%) 0          0                    0                  0          0                   0                  0               0               for (size_t j = 0; j < N; ++j)
+  3,145,728 ( 0.23%) 0          0                    0                  0          0             524,288 ( 1.43%)    16,384 ( 0.77%) 16,384 (32.93%)        matrix[i][j] = rand() % 100;
+          4 ( 0.00%) 0          0                    4 ( 0.00%)         0          0                   0                  0               0           }
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .           void
+          .          .          .                    .                  .          .                   .                  .               .           matrix_dump(float matrix[N][N])
+          .          .          .                    .                  .          .                   .                  .               .           {
+          .          .          .                    .                  .          .                   .                  .               .             for (size_t i = 0; i < N; ++i)
+          .          .          .                    .                  .          .                   .                  .               .               {
+          .          .          .                    .                  .          .                   .                  .               .                 for (size_t j = 0; j < N; ++j)
+          .          .          .                    .                  .          .                   .                  .               .                   printf("%f ", matrix[i][j]);
+-- line 70 ----------------------------------------
+-- line 97 ----------------------------------------
+          .          .          .                    .                  .          .                   .                  .               .                   C[i][j] = row;
+          .          .          .                    .                  .          .                   .                  .               .                 }
+          .          .          .                    .                  .          .                   .                  .               .           }
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .           #else
+          .          .          .                    .                  .          .                   .                  .               .           // blocked multiply
+          .          .          .                    .                  .          .                   .                  .               .           static void
+          .          .          .                    .                  .          .                   .                  .               .           matrix_multiply(float C[N][N], const float A[N][N], const float B[N][N])
+         11 ( 0.00%) 2 ( 0.13%) 2 ( 0.13%)           0                  0          0                   8 ( 0.00%)         0               0           {
+        193 ( 0.00%) 0          0                    0                  0          0                   0                  0               0             for (size_t jj = 0; jj < N; jj += BLOCK) {
+     12,288 ( 0.00%) 0          0                    0                  0          0                   0                  0               0               for (size_t kk = 0; kk < N; kk += BLOCK) {
+  8,392,704 ( 0.61%) 0          0                    0                  0          0                   0                  0               0                 for (size_t i = 0; i < N; i++) {
+ 73,408,896 ( 5.31%) 1 ( 0.07%) 1 ( 0.07%)       4,160 ( 0.00%)         0          0                  64 ( 0.00%)         0               0                   for (size_t j = jj; j < min(jj+BLOCK, N); j++) {
+ 16,777,216 ( 1.21%) 0          0                    0                  0          0                   0                  0               0                     float row = 0.0;
+503,324,672 (36.42%) 1 ( 0.07%) 1 ( 0.07%)           0                  0          0          16,777,216 (45.70%)         0               0                     for (size_t k = kk; k < min(kk+BLOCK, N); k++) {
+675,282,944 (48.87%) 0          0          268,435,456 (92.57%) 2,129,920 (99.92%) 0                   0                  0               0                       row += A[i][k] * B[k][j];
+          .          .          .                    .                  .          .                   .                  .               .                     }
+ 16,777,216 ( 1.21%) 0          0                    0                  0          0          16,777,216 (45.70%) 2,097,152 (98.41%) 16,384 (32.93%)            C[i][j] = row;
+          .          .          .                    .                  .          .                   .                  .               .                   }
+          .          .          .                    .                  .          .                   .                  .               .                 }
+          .          .          .                    .                  .          .                   .                  .               .               }
+          .          .          .                    .                  .          .                   .                  .               .             }
+          8 ( 0.00%) 0          0                    7 ( 0.00%)         1 ( 0.00%) 0                   0                  0               0           }
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .           #endif
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .           int
+          .          .          .                    .                  .          .                   .                  .               .           main(int argc, char **argv)
+         11 ( 0.00%) 2 ( 0.13%) 2 ( 0.13%)           1 ( 0.00%)         0          0                   7 ( 0.00%)         0               0           {
+          .          .          .                    .                  .          .                   .                  .               .             /* We use this "magic" to allocate real two-dimensional arrays, that
+          .          .          .                    .                  .          .                   .                  .               .              * are aligned at 64-bytes (cache line size).
+          .          .          .                    .                  .          .                   .                  .               .              */
+          2 ( 0.00%) 0          0                    0                  0          0                   1 ( 0.00%)         0               0             float (*A)[N] = (float (*)[N])_mm_malloc(N * N * sizeof(float), 64);
+          2 ( 0.00%) 0          0                    0                  0          0                   1 ( 0.00%)         0               0             float (*B)[N] = (float (*)[N])_mm_malloc(N * N * sizeof(float), 64);
+          2 ( 0.00%) 0          0                    0                  0          0                   1 ( 0.00%)         0               0             float (*C)[N] = (float (*)[N])_mm_malloc(N * N * sizeof(float), 64);
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .             struct timespec init_start_time, init_end_time;
+          3 ( 0.00%) 0          0                    0                  0          0                   1 ( 0.00%)         0               0             get_time(&init_start_time);
+          .          .          .                    .                  .          .                   .                  .               .           
+          2 ( 0.00%) 0          0                    0                  0          0                   1 ( 0.00%)         0               0             matrix_init_identity(A);
+          2 ( 0.00%) 1 ( 0.07%) 1 ( 0.07%)           0                  0          0                   1 ( 0.00%)         0               0             matrix_init_random(B);
+          .          .          .                    .                  .          .                   .                  .               .           
+          3 ( 0.00%) 0          0                    0                  0          0                   1 ( 0.00%)         0               0             get_time(&init_end_time);
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .             /* Perform the matrix multiplication */
+          .          .          .                    .                  .          .                   .                  .               .             struct timespec compute_start_time, compute_end_time;
+          4 ( 0.00%) 0          0                    0                  0          0                   2 ( 0.00%)         0               0             get_time(&compute_start_time);
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .             for (int Z = 0; Z < N_REPEAT; ++Z)
+          4 ( 0.00%) 0          0                    0                  0          0                   1 ( 0.00%)         0               0               matrix_multiply(C, A, B);
+          .          .          .                    .                  .          .                   .                  .               .           
+          3 ( 0.00%) 0          0                    0                  0          0                   1 ( 0.00%)         0               0             get_time(&compute_end_time);
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .           #ifdef ENABLE_TIMING
+          .          .          .                    .                  .          .                   .                  .               .             /* Output result in CSV for easy processing */
+          .          .          .                    .                  .          .                   .                  .               .             /* N,init time,n_repeat,runtime */
+          7 ( 0.00%) 1 ( 0.07%) 1 ( 0.07%)           1 ( 0.00%)         0          0                   3 ( 0.00%)         0               0             printf("%d,%f,%d,%f\n",
+          .          .          .                    .                  .          .                   .                  .               .                    N,
+          .          .          .                    .                  .          .                   .                  .               .                    get_elapsed_ms(&init_end_time, &init_start_time),
+          .          .          .                    .                  .          .                   .                  .               .                    N_REPEAT,
+          .          .          .                    .                  .          .                   .                  .               .                    get_elapsed_ms(&compute_end_time, &compute_start_time));
+          .          .          .                    .                  .          .                   .                  .               .           #endif /* ENABLE_TIMING */
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .           #if 0
+          .          .          .                    .                  .          .                   .                  .               .             /* For debugging */
+          .          .          .                    .                  .          .                   .                  .               .             if (!matrix_equal(C, B))
+          .          .          .                    .                  .          .                   .                  .               .               fprintf(stderr, "Matrices are not equal!!\n");
+          .          .          .                    .                  .          .                   .                  .               .           #endif
+          .          .          .                    .                  .          .                   .                  .               .           
+          2 ( 0.00%) 0          0                    0                  0          0                   1 ( 0.00%)         0               0             _mm_free(A);
+          2 ( 0.00%) 1 ( 0.07%) 1 ( 0.07%)           0                  0          0                   1 ( 0.00%)         0               0             _mm_free(B);
+          2 ( 0.00%) 0          0                    0                  0          0                   1 ( 0.00%)         0               0             _mm_free(C);
+          .          .          .                    .                  .          .                   .                  .               .           
+          .          .          .                    .                  .          .                   .                  .               .             return 0;
+         12 ( 0.00%) 0          0                    9 ( 0.00%)         2 ( 0.00%) 0                   0                  0               0           }
+--------------------------------------------------------------------------------
+The following files chosen for auto-annotation could not be found:
+--------------------------------------------------------------------------------
+  ./stdlib/./stdlib/random.c
+  ./stdlib/./stdlib/random_r.c
+
+--------------------------------------------------------------------------------
+Ir                     I1mr        ILmr        Dr                   D1mr               DLmr       Dw                  D1mw               DLmw            
+--------------------------------------------------------------------------------
+1,365,022,121 (98.78%) 11 ( 0.73%) 11 ( 0.74%) 285,216,921 (98.36%) 2,129,925 (99.92%) 1 ( 0.07%) 34,079,333 (92.82%) 2,114,040 (99.20%) 32,768 (65.87%)  events annotated
+

@@ -1,0 +1,173 @@
+--------------------------------------------------------------------------------
+I1 cache:         65536 B, 64 B, 8-way associative
+D1 cache:         32768 B, 64 B, 8-way associative
+LL cache:         35651584 B, 64 B, 17-way associative
+Command:          ./grayscale_yx frame0001.png 10
+Data file:        cachegrind.out.81349
+Events recorded:  Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Events shown:     Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Event sort order: Ir I1mr ILmr Dr D1mr DLmr Dw D1mw DLmw
+Thresholds:       0.1 100 100 100 100 100 100 100 100
+Include dirs:     
+User annotated:   
+Auto-annotation:  on
+
+--------------------------------------------------------------------------------
+Ir                     I1mr           ILmr           Dr                   D1mr               DLmr           Dw                  D1mw               DLmw             
+--------------------------------------------------------------------------------
+1,630,705,445 (100.0%) 2,417 (100.0%) 2,358 (100.0%) 217,376,395 (100.0%) 1,603,564 (100.0%) 2,044 (100.0%) 63,741,740 (100.0%) 1,508,637 (100.0%) 246,381 (100.0%)  PROGRAM TOTALS
+
+--------------------------------------------------------------------------------
+Ir                     I1mr         ILmr         Dr                  D1mr               DLmr         Dw                  D1mw               DLmw              file:function
+--------------------------------------------------------------------------------
+1,081,446,510 (66.32%)   5 ( 0.21%)   5 ( 0.21%) 78,673,970 (36.19%) 1,228,811 (76.63%)   1 ( 0.05%) 39,321,610 (61.69%) 1,228,809 (81.45%) 122,880 (49.87%)  /vol/home/s3801322/Documents/CA/lab3materials-2024/lab3materials/grayscale.c:grayscale_yx
+  275,251,200 (16.88%)   1 ( 0.04%)   1 ( 0.04%) 78,643,200 (36.18%)         0            0                   0                  0                0           /vol/home/s3801322/Documents/CA/lab3materials-2024/lab3materials/grayscale.c:compute_intensity
+  242,208,656 (14.85%) 471 (19.49%) 455 (19.30%) 50,171,021 (23.08%)   326,629 (20.37%)  75 ( 3.67%) 21,939,460 (34.42%)    42,108 ( 2.79%)     194 ( 0.08%)  ???:???
+   20,249,680 ( 1.24%)  23 ( 0.95%)  23 ( 0.98%)  7,396,815 ( 3.40%)         0            0             757,564 ( 1.19%)         1 ( 0.00%)       0           ???:adler32_z
+    8,937,055 ( 0.55%) 100 ( 4.14%) 100 ( 4.24%)  1,682,982 ( 0.77%)    11,431 ( 0.71%)   5 ( 0.24%)    981,332 ( 1.54%)     4,024 ( 0.27%)      13 ( 0.01%)  ???:inflate
+    2,113,234 ( 0.13%)  10 ( 0.41%)  10 ( 0.42%)    682,805 ( 0.31%)    27,932 ( 1.74%) 127 ( 6.21%)    671,154 ( 1.05%)   232,341 (15.40%) 122,367 (49.67%)  ./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S:__memcpy_avx_unaligned_erms
+
+--------------------------------------------------------------------------------
+-- Auto-annotated source: /vol/home/s3801322/Documents/CA/lab3materials-2024/lab3materials/grayscale.c
+--------------------------------------------------------------------------------
+Ir                   I1mr       ILmr       Dr                  D1mr               DLmr       Dw                  D1mw               DLmw             
+
+-- line 17 ----------------------------------------
+          .          .          .                   .                  .          .                   .                  .                .            * It is #defined in the makefile.
+          .          .          .                   .                  .          .                   .                  .                .            */
+          .          .          .                   .                  .          .                   .                  .                .           #ifndef VARIANT
+          .          .          .                   .                  .          .                   .                  .                .           #  define VARIANT grayscale_xy
+          .          .          .                   .                  .          .                   .                  .                .           #endif
+          .          .          .                   .                  .          .                   .                  .                .           
+          .          .          .                   .                  .          .                   .                  .                .           static inline const char *
+          .          .          .                   .                  .          .                   .                  .                .           get_basename(const char *str)
+         20 ( 0.00%) 0          0                   0                  0          0                  10 ( 0.00%)         0                0           {
+         20 ( 0.00%) 0          0                   0                  0          0                  10 ( 0.00%)         0                0             const char *end = strrchr(str, '/');
+          .          .          .                   .                  .          .                   .                  .                .             if (!end)
+          .          .          .                   .                  .          .                   .                  .                .               return str;
+         40 ( 0.00%) 0          0                   0                  0          0                   0                  0                0             return end + 1;
+         20 ( 0.00%) 0          0                  20 ( 0.00%)         0          0                   0                  0                0           }
+          .          .          .                   .                  .          .                   .                  .                .           
+          .          .          .                   .                  .          .                   .                  .                .           
+          .          .          .                   .                  .          .                   .                  .                .           /* Computes the intensity of @color. To do so, we use CIE 1931 weights
+          .          .          .                   .                  .          .                   .                  .                .            * multiplied by alpha: Y = A( 0.2126R + 0.7152G + 0.0722B ).
+          .          .          .                   .                  .          .                   .                  .                .            */
+          .          .          .                   .                  .          .                   .                  .                .           static float
+          .          .          .                   .                  .          .                   .                  .                .           compute_intensity(rgba_t color)
+ 39,321,600 ( 2.41%) 1 ( 0.04%) 1 ( 0.04%)          0                  0          0                   0                  0                0           {
+216,268,800 (13.26%) 0          0          58,982,400 (27.13%)         0          0                   0                  0                0             return color.w * (0.2126f * color.x + 0.7152f * color.y + 0.0722f * color.z);
+ 19,660,800 ( 1.21%) 0          0          19,660,800 ( 9.04%)         0          0                   0                  0                0           }
+          .          .          .                   .                  .          .                   .                  .                .           
+          .          .          .                   .                  .          .                   .                  .                .           /* Computes the grayscale value for each pixel in @src and stores this in @dst.
+          .          .          .                   .                  .          .                   .                  .                .            * @dst is expected to have been created already with the correct dimensions.
+          .          .          .                   .                  .          .                   .                  .                .            * Safe to use an in-place operation.
+          .          .          .                   .                  .          .                   .                  .                .            */
+          .          .          .                   .                  .          .                   .                  .                .           void
+          .          .          .                   .                  .          .                   .                  .                .           grayscale_xy(image_t *dst, const image_t *src)
+          .          .          .                   .                  .          .                   .                  .                .           {
+-- line 48 ----------------------------------------
+-- line 56 ----------------------------------------
+          .          .          .                   .                  .          .                   .                  .                .                     RGBA(gray, intensity, intensity, intensity, 1.f);
+          .          .          .                   .                  .          .                   .                  .                .                     RGBA_pack(*image_get_pixel(dst, x, y), gray);
+          .          .          .                   .                  .          .                   .                  .                .                   }
+          .          .          .                   .                  .          .                   .                  .                .               }
+          .          .          .                   .                  .          .                   .                  .                .           }
+          .          .          .                   .                  .          .                   .                  .                .           
+          .          .          .                   .                  .          .                   .                  .                .           void
+          .          .          .                   .                  .          .                   .                  .                .           grayscale_yx(image_t *dst, const image_t *src)
+         30 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          0                  0          0                  10 ( 0.00%)         0                0           {
+     40,980 ( 0.00%) 0          0              10,250 ( 0.00%)         0          0                   0                  0                0             for (int y = 0; y < dst->height; y++)
+          .          .          .                   .                  .          .                   .                  .                .               {
+ 78,663,720 ( 4.82%) 1 ( 0.04%) 1 ( 0.04%) 19,660,820 ( 9.04%)         1 ( 0.00%) 1 ( 0.05%)          0                  0                0                 for (int x = 0; x < dst->width; x++)
+          .          .          .                   .                  .          .                   .                  .                .                   {
+          .          .          .                   .                  .          .                   .                  .                .                     rgba_t color, gray;
+648,816,640 (39.79%) 2 ( 0.08%) 2 ( 0.08%) 39,331,840 (18.09%) 1,228,810 (76.63%) 0                   0                  0                0                     RGBA_unpack(color, *image_get_pixel(src, x, y));
+ 58,982,400 ( 3.62%) 0          0                   0                  0          0          19,660,800 (30.84%)         0                0                     float intensity = compute_intensity(color);
+          .          .          .                   .                  .          .                   .                  .                .                     RGBA(gray, intensity, intensity, intensity, 1.f);
+294,942,720 (18.09%) 1 ( 0.04%) 1 ( 0.04%) 19,671,040 ( 9.05%)         0          0          19,660,800 (30.84%) 1,228,809 (81.45%) 122,880 (49.87%)            RGBA_pack(*image_get_pixel(dst, x, y), gray);
+          .          .          .                   .                  .          .                   .                  .                .                   }
+          .          .          .                   .                  .          .                   .                  .                .               }
+         20 ( 0.00%) 0          0                  20 ( 0.00%)         0          0                   0                  0                0           }
+          .          .          .                   .                  .          .                   .                  .                .           
+          .          .          .                   .                  .          .                   .                  .                .           
+          .          .          .                   .                  .          .                   .                  .                .           int
+          .          .          .                   .                  .          .                   .                  .                .           main(int argc, char **argv)
+         11 ( 0.00%) 2 ( 0.08%) 2 ( 0.08%)          1 ( 0.00%)         0          0                   7 ( 0.00%)         0                0           {
+          2 ( 0.00%) 0          0                   0                  0          0                   0                  0                0             if (argc < 3)
+          .          .          .                   .                  .          .                   .                  .                .               {
+          .          .          .                   .                  .          .                   .                  .                .                 fprintf(stderr, "usage: %s <infile> <n_repeat> [outfile]\n", argv[0]);
+          .          .          .                   .                  .          .                   .                  .                .                 fprintf(stderr, "\n  where <infile> and [outfile] are PNG files.");
+          .          .          .                   .                  .          .                   .                  .                .                 fprintf(stderr, "\n  <n_repeat> is the number of times the computation should be repeated.");
+          .          .          .                   .                  .          .                   .                  .                .                 fprintf(stderr, "\n  [outfile] is an optional parameter.\n");
+          .          .          .                   .                  .          .                   .                  .                .                 return -1;
+          .          .          .                   .                  .          .                   .                  .                .               }
+          .          .          .                   .                  .          .                   .                  .                .           
+          1 ( 0.00%) 0          0                   1 ( 0.00%)         0          0                   0                  0                0             const char *infile = argv[1];
+          .          .          .                   .                  .          .                   .                  .                .             long int n_repeat = 0;
+          2 ( 0.00%) 0          0                   1 ( 0.00%)         1 ( 0.00%) 0                   1 ( 0.00%)         0                0             const char *outfile = argv[3];
+          .          .          .                   .                  .          .                   .                  .                .           
+          6 ( 0.00%) 0          0                   1 ( 0.00%)         0          0                   2 ( 0.00%)         0                0             n_repeat = strtol(argv[2], NULL, 10);
+          5 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          1 ( 0.00%)         0          0                   1 ( 0.00%)         0                0             if (errno > 0 || n_repeat == 0)
+          .          .          .                   .                  .          .                   .                  .                .               {
+          .          .          .                   .                  .          .                   .                  .                .                 fprintf(stderr, "Could not convert n_repeat argument to integer.\n");
+          .          .          .                   .                  .          .                   .                  .                .                 return EXIT_FAILURE;
+          .          .          .                   .                  .          .                   .                  .                .               }
+          .          .          .                   .                  .          .                   .                  .                .           
+          .          .          .                   .                  .          .                   .                  .                .             /* Load PNG image */
+          .          .          .                   .                  .          .                   .                  .                .             struct timespec load_start_time, load_end_time;
+          3 ( 0.00%) 0          0                   0                  0          0                   1 ( 0.00%)         0                0             get_time(&load_start_time);
+          .          .          .                   .                  .          .                   .                  .                .           
+          3 ( 0.00%) 1 ( 0.04%) 0                   0                  0          0                   1 ( 0.00%)         0                0             image_t *image = image_new_from_pngfile(infile);
+          2 ( 0.00%) 0          0                   0                  0          0                   0                  0                0             if (!image)
+          .          .          .                   .                  .          .                   .                  .                .               return EXIT_FAILURE;
+          .          .          .                   .                  .          .                   .                  .                .           
+          4 ( 0.00%) 0          0                   0                  0          0                   2 ( 0.00%)         1 ( 0.00%)       0             get_time(&load_end_time);
+          .          .          .                   .                  .          .                   .                  .                .           
+          .          .          .                   .                  .          .                   .                  .                .           #if ENABLE_TIMING
+          .          .          .                   .                  .          .                   .                  .                .             printf("filename,load time,grayscale time\n");
+          .          .          .                   .                  .          .                   .                  .                .           #endif /* ENABLE_TIMING */
+          .          .          .                   .                  .          .                   .                  .                .           
+          .          .          .                   .                  .          .                   .                  .                .             /* Execute */
+          3 ( 0.00%) 0          0                   0                  0          0                   1 ( 0.00%)         0                0             image_t *result = image_new_from_image(image);
+          .          .          .                   .                  .          .                   .                  .                .           
+         46 ( 0.00%) 0          0                  21 ( 0.00%)         0          0                   0                  0                0             for (long int Z = 0; Z < n_repeat; Z++)
+          .          .          .                   .                  .          .                   .                  .                .               {
+          .          .          .                   .                  .          .                   .                  .                .                 struct timespec start_time, end_time;
+          .          .          .                   .                  .          .                   .                  .                .           
+         30 ( 0.00%) 0          0                   0                  0          0                  20 ( 0.00%)         0                0                 get_time(&start_time);
+          .          .          .                   .                  .          .                   .                  .                .           
+         30 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          0                  0          0                  10 ( 0.00%)         0                0                 VARIANT(result, image);
+          .          .          .                   .                  .          .                   .                  .                .           
+         20 ( 0.00%) 0          0                   0                  0          0                  10 ( 0.00%)         0                0                 get_time(&end_time);
+          .          .          .                   .                  .          .                   .                  .                .           
+          .          .          .                   .                  .          .                   .                  .                .           #if ENABLE_TIMING
+          .          .          .                   .                  .          .                   .                  .                .                 /* Output result in CSV for easy processing */
+          .          .          .                   .                  .          .                   .                  .                .                 /* filename,load time,compute time */
+        110 ( 0.00%) 0          0                  10 ( 0.00%)         0          0                  50 ( 0.00%)         0                0                 printf("%s,%f,%f\n",
+          .          .          .                   .                  .          .                   .                  .                .                        get_basename(infile),
+          .          .          .                   .                  .          .                   .                  .                .                        get_elapsed_ms(&load_end_time, &load_start_time),
+          .          .          .                   .                  .          .                   .                  .                .                        get_elapsed_ms(&end_time, &start_time));
+          .          .          .                   .                  .          .                   .                  .                .           #endif /* ENABLE_TIMING */
+          .          .          .                   .                  .          .                   .                  .                .               }
+          .          .          .                   .                  .          .                   .                  .                .           
+          .          .          .                   .                  .          .                   .                  .                .             /* Save result if desired and if applicable */
+          2 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          0                  0          0                   0                  0                0             int retval = EXIT_SUCCESS;
+          5 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          1 ( 0.00%)         0          0                   0                  0                0             if (outfile && result && !image_save_as_pngfile(result, outfile))
+          .          .          .                   .                  .          .                   .                  .                .               retval = EXIT_FAILURE;
+          .          .          .                   .                  .          .                   .                  .                .           
+          3 ( 0.00%) 0          0                   0                  0          0                   2 ( 0.00%)         0                0             image_free(image);
+          2 ( 0.00%) 0          0                   0                  0          0                   1 ( 0.00%)         0                0             image_free(result);
+          .          .          .                   .                  .          .                   .                  .                .           
+          2 ( 0.00%) 0          0                   1 ( 0.00%)         0          0                   0                  0                0             return retval;
+         11 ( 0.00%) 1 ( 0.04%) 1 ( 0.04%)          9 ( 0.00%)         1 ( 0.00%) 0                   0                  0                0           }
+
+--------------------------------------------------------------------------------
+The following files chosen for auto-annotation could not be found:
+--------------------------------------------------------------------------------
+  ./string/../sysdeps/x86_64/multiarch/memmove-vec-unaligned-erms.S
+
+--------------------------------------------------------------------------------
+Ir                     I1mr        ILmr        Dr                   D1mr               DLmr       Dw                  D1mw               DLmw             
+--------------------------------------------------------------------------------
+1,356,698,113 (83.20%) 14 ( 0.58%) 13 ( 0.55%) 157,317,237 (72.37%) 1,228,813 (76.63%) 1 ( 0.05%) 39,321,739 (61.69%) 1,228,810 (81.45%) 122,880 (49.87%)  events annotated
+
